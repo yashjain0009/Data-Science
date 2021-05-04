@@ -9,8 +9,14 @@ from keras.layers import Dense,LSTM
 plt.style.use('fivethirtyeight')
 st = web.DataReader(name='ITC.NS', data_source='yahoo', start='2010-1-1')
 df=pd.DataFrame(st)
+df=df.reset_index(["Date"])
+scaler=MinMaxScaler(feature_range=(0,1))
+df1=df.reset_index(["Adj CLose"])
+df1=scaler.fit_transform(np.array(df1).reshape(-1,1))
+
+
 data=df.filter(["Close"])
 dataset=data.values
 training_data_len=math.ceil(len(dataset)*0.8)
-scaler=MinMaxScaler(feature_range=(0,1))
+
 scaled_data=scaler.fit_transform(dataset)
